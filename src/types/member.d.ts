@@ -1,4 +1,4 @@
-// src/types/member.d.ts
+/** 通用的用户信息  */
 type BaseProfile = {
   /** 用户ID */
   id: number
