@@ -61,8 +61,8 @@ const onDeleteAddress = (id: string) => {
               <button @tap="onDeleteAddress(item.id)" class="delete-button">删除</button>
             </template>
           </uni-swipe-action-item>
-        </uni-swipe-action> </view
-      >·
+        </uni-swipe-action>
+      </view>
       <view v-else class="blank">暂无收货地址</view>
     </scroll-view>
     <!-- 添加按钮 -->
