@@ -15,11 +15,11 @@ const orderTypes = [
 
 // 获取会员信息
 const memberStore = useMemberStore()
-const { guessRef, onSCrolltolower } = useGuessList()
+const { guessRef, onScrolltolower } = useGuessList()
 </script>
 
 <template>
-  <scroll-view @scrolltolower="onSCrolltolower" class="viewport" scroll-y enable-back-to-top>
+  <scroll-view @scrolltolower="onScrolltolower" class="viewport" scroll-y enable-back-to-top>
     <!-- 个人资料 -->
     <view class="profile" :style="{ paddingTop: safeAreaInsets!.top + 'px' }">
       <!-- 情况1： 已登录 -->

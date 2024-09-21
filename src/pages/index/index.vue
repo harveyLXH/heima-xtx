@@ -40,7 +40,7 @@ onLoad(async () => {
   isLoading.value = false
 })
 
-const { guessRef, onSCrolltolower } = useGuessList()
+const { guessRef, onScrolltolower } = useGuessList()
 
 const isTriggered = ref(false)
 // 自定义下拉刷新被触发
@@ -69,7 +69,7 @@ const onRefresherrefresh = async () => {
     refresher-enabled
     @refresherrefresh="onRefresherrefresh"
     :refresher-triggered="isTriggered"
-    @scrolltolower="onSCrolltolower"
+    @scrolltolower="onScrolltolower"
     class="scroll-view"
     scroll-y
   >
