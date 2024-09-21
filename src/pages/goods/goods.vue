@@ -11,6 +11,8 @@ import type {
   SkuPopupLocaldata,
 } from '@/components/vk-data-goods-sku-popup/vk-data-goods-sku-popup'
 import { postMemberCartAPI } from '@/services/cart'
+import type { AddressItem } from '@/types/address'
+import { getMemberAddressAPI } from '@/services/address'
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
@@ -50,9 +52,16 @@ const getGoodsByIdData = async () => {
   }
 }
 
+// 获取收货地址列表数据
+const addressList = ref<AddressItem[]>([])
+const getMemberAddressData = async () => {
+  const res = await getMemberAddressAPI()
+  addressList.value = res.result
+}
+
 // 页面加载
-onLoad(() => {
-  getGoodsByIdData()
+onLoad(async () => {
+  await Promise.all([getGoodsByIdData(), getMemberAddressData()])
 })
 
 // 轮播图变化时
@@ -115,6 +124,13 @@ const onAddCart = async (ev: SkuPopupEvent) => {
   uni.showToast({ title: '添加成功' })
   isShowSku.value = false
 }
+
+// 立即购买
+const onBuyNow = (ev: SkuPopupEvent) => {
+  uni.navigateTo({ url: `/pagesOrder/create/create?skuId=${ev._id}&count=${ev.buy_num}` })
+  // 关闭SKU组件
+  isShowSku.value = false
+}
 </script>
 
 <template>
@@ -132,6 +148,7 @@ const onAddCart = async (ev: SkuPopupEvent) => {
       backgroundColor: '#E9F8F5',
     }"
     @add-cart="onAddCart"
+    @buy-now="onBuyNow"
   />
 
   <scroll-view scroll-y class="viewport">
@@ -246,7 +263,11 @@ const onAddCart = async (ev: SkuPopupEvent) => {
 
   <!-- 弹出层 -->
   <uni-popup ref="popup" type="bottom" border-radius="10px 10px 0 0" background-color="#fff">
-    <AddressPanel v-if="popupName === 'address'" @close="popup?.close()" />
+    <AddressPanel
+      v-if="popupName === 'address'"
+      @close="popup?.close()"
+      :addressList="addressList"
+    />
     <ServicePanel v-if="popupName === 'service'" @close="popup?.close()" />
   </uni-popup>
 </template>

@@ -85,7 +85,9 @@ const selectedCartListCount = computed(() => {
 
 // 计算选中总金额
 const selectedCartListMoney = computed(() => {
-  return selectedCartList.value.reduce((sum, item) => sum + item.count * item.nowPrice, 0)
+  return selectedCartList.value
+    .reduce((sum, item) => sum + item.count * item.nowPrice, 0)
+    .toFixed(2)
 })
 
 const gotoPayment = () => {
@@ -96,7 +98,7 @@ const gotoPayment = () => {
     })
   }
   // 跳转到结算页
-  uni.showToast({ title: '等待完成' })
+  uni.navigateTo({ url: '/pagesOrder/create/create' })
 }
 </script>
 
@@ -169,7 +171,11 @@ const gotoPayment = () => {
         <text class="text">合计</text>
         <text class="amount">{{ selectedCartListMoney }}</text>
         <view class="button-grounp">
-          <view class="button payment-button" :class="{ disabled: selectedCartListCount === 0 }">
+          <view
+            class="button payment-button"
+            :class="{ disabled: selectedCartListCount === 0 }"
+            @tap="gotoPayment"
+          >
             去结算 {{ selectedCartListCount }}
           </view>
         </view>

@@ -1,8 +1,28 @@
 <script setup lang="ts">
+import { useAddressStore } from '@/stores/modules/address'
+import type { AddressItem } from '@/types/address'
+
 //子调父
 const emit = defineEmits<{
   (event: 'close'): void
 }>()
+
+//
+const props = defineProps<{ addressList: AddressItem[] }>()
+
+const addNewAddress = () => {
+  emit('close')
+  uni.navigateTo({
+    url: '/pagesMember/address-form/address-form',
+  })
+}
+
+// 修改收货地址
+const onChangeAddress = (item: AddressItem) => {
+  // 修改地址
+  const addressStore = useAddressStore()
+  addressStore.changeSelectedAddress(item)
+}
 </script>
 
 <template>
@@ -13,12 +33,17 @@ const emit = defineEmits<{
     <view hover-class="title">配送至</view>
     <!-- 内容 -->
     <view class="content">
-      <view class="item">
-        <view class="user">李明 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-checked"></text>
+      <view
+        class="item"
+        v-for="item in props.addressList"
+        :key="item.id"
+        @tap="onChangeAddress(item)"
+      >
+        <view class="user">{{ item.receiver }} {{ item.contact }}</view>
+        <view class="address">{{ item.fullLocation }} {{ item.address }}</view>
+        <text class="icon" :class="item.isDefault === 1 ? 'icon-checked' : 'icon-ring'"></text>
       </view>
-      <view class="item">
+      <!-- <view class="item">
         <view class="user">王东 13824686868</view>
         <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
         <text class="icon icon-ring"></text>
@@ -27,10 +52,10 @@ const emit = defineEmits<{
         <view class="user">张三 13824686868</view>
         <view class="address">北京市朝阳区孙河安平北街6号院</view>
         <text class="icon icon-ring"></text>
-      </view>
+      </view> -->
     </view>
     <view class="footer">
-      <view class="button primary"> 新建地址 </view>
+      <view class="button primary" @tap="addNewAddress"> 新建地址 </view>
       <view v-if="false" class="button primary">确定</view>
     </view>
   </view>
