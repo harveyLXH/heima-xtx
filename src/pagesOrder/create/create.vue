@@ -67,7 +67,7 @@ const onOrderSubmit = async () => {
     payChannel: 2,
     payType: 1,
   })
-  console.log('res', res)
+
   // 关闭当前页面,跳转到订单详情,传递订单Id
   uni.redirectTo({ url: `/pagesOrder/detail/detail?id=${res.result.id}` })
 }
