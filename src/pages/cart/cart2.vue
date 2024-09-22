@@ -11,4 +11,8 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
   </view>
 </template>
 
-<style scoped></style>
+<style lang="scss">
+page {
+  height: 100%;
+}
+</style>
